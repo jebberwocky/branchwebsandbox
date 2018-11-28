@@ -32,29 +32,88 @@
     </script>
   </head>
   <body>
-    <div class="container">
-      <h3>Branch Demo Code</h3>
+    <div class="container-fluid">
+      <h3>Branch Web SDK Demo Code</h3>
       <h4>Branch data from init</h4>
       <div class="row">
+        <div class="col">
         <pre id="json"></pre>
+       </div>
       </div>
-      <div class="row">
-        <form style="width:100%;">
+         <form>
           <div class="form-group">
             <label >New deep link</label>
             <input type="text" class="form-control" id="thelink">
           </div>
-          <a class="btn btn-primary" id="createdeeplink">create deep link</a>
-          <a class="btn btn-primary" id="thelinkanchor">Click Me(click create deep link first)</a>
-          <button class="btn btn-primary" id="thelinkbtn">Click Me 2(click create deep link first)</button>
+          <!--
+          <a class="btn btn-primary" id="createdeeplink">create deep link</a>-->
+          <label >Link created init</label>
+          <div class="form-group">
+          <a  id="thelinkanchor">Hyerlink herf</a>
+          <button class="btn btn-primary" id="thelinkbtn">Button onclick</button>
+        </div>
+        <div class="form-group">
+          <a class="btn btn-primary btn-lg btn-block" id="createAndLink">create deep link & location.href</a>
+          <a class="btn btn-primary btn-lg btn-block" id="createAndLink2">create deep link & window.open</a>
+        </div>
         </form>
-      </a>
-    </div>
   </div>
 </body>
 <script>
   $(document).ready(function(){
-    $("#createdeeplink").click(function(){
+
+    $("#createAndLink").click(function(){
+      var linkData = {
+        campaign: 'content 1234',
+        channel: 'website',
+        feature: 'testing',
+        stage: 'new user',
+        tags: [ 'tag1', 'tag2', 'tag3' ],
+        alias: '',
+        data: {
+          'testing':'location.href',
+          'params':{"i":"1","j":"3"},
+          'custom_bool': true,
+          'custom_int': Date.now(),
+          'custom_string': 'hello',
+          '$og_title': 'Title',
+          '$og_description': 'Description',
+          '$og_image_url':'http://www.whereyogi.com/branch/ic_launcher.png'
+        }
+      };
+       branch.link(linkData, function(err, link) {
+        console.log(link);
+        window.location.href=link;
+      });
+    })
+
+        $("#createAndLink2").click(function(){
+      var linkData = {
+        campaign: 'content 1234',
+        channel: 'website',
+        feature: 'testing',
+        stage: 'new user',
+        tags: [ 'tag1', 'tag2', 'tag3' ],
+        alias: '',
+        data: {
+          'testing':'window.open',
+          'params':{"i":"1","j":"3"},
+          'custom_bool': true,
+          'custom_int': Date.now(),
+          'custom_string': 'hello',
+          '$og_title': 'Title',
+          '$og_description': 'Description',
+          '$og_image_url':'http://www.whereyogi.com/branch/ic_launcher.png'
+        }
+      };
+       branch.link(linkData, function(err, link) {
+        console.log(link);
+        window.open(link || err);
+      });
+    })
+
+    //$("#createdeeplink").click(function(){
+      $(document).ready(function(){
       var linkData = {
         campaign: 'content 123',
         channel: 'website',
@@ -82,6 +141,6 @@
           document.getElementById('thelinkanchor').href = link || err;
       });
     })
-  })
+  })//})
 </script>
 </html>
