@@ -4,6 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="branch:deeplink:productid" content="SUK1001" />
     <title></title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61112099-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-61112099-1');
+  </script>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -41,6 +51,19 @@
        </div>
       </div>
          <form>
+           <div class="form-group">
+            <label>This is quick link generated from Dashboard</label>
+            <a href="https://whereyogi.app.link/oaACZCePPU">https://whereyogi.app.link/oaACZCePPU</a>
+           </div>
+            <div class="form-group">
+                <label >Multi links open test(will generate 10 links and open in new tab)</label>
+                <a class="btn btn-warning btn-lg btn-block" id="multirun">run</a>
+            </div>
+            <div class="form-group">
+                <label >UTM test link created from webssdk</label>
+                <input type="text" class="form-control" id="utm_link">
+                <a id="utmanchor">utm test link</a>
+            </div>
           <div class="form-group">
             <label >New deep link</label>
             <input type="text" class="form-control" id="thelink">
@@ -56,11 +79,26 @@
           <a class="btn btn-primary btn-lg btn-block" id="createAndLink">create deep link & location.href</a>
           <a class="btn btn-primary btn-lg btn-block" id="createAndLink2">create deep link & window.open</a>
         </div>
+          <div class="form-group">
+          <a class="btn btn-danger btn-lg btn-block" id="sendEvent">Send custom event</a>
+        </div>
         </form>
   </div>
 </body>
 <script>
   $(document).ready(function(){
+
+    $("#sendEvent").click(function(){
+      branch.logEvent(
+           "helloworld",
+           { metadata: '123', sku: '12345678' },
+           function(err) { 
+             if(!err)
+              alert("event fired");
+            else
+             console.log(err); }
+      );
+    });
 
     $("#createAndLink").click(function(){
       var linkData = {
@@ -112,8 +150,63 @@
       });
     })
 
+    $(document).ready(function(){
+      let url = "http://www.whereyogi.com",
+      param = "?a=b&utm_content=test_content&utm_term=test_term";
+      var linkData = {
+        campaign: 'utm_test_campaign',
+        channel: 'utm_test_channel',
+        feature: 'utm_test_feature',
+        data: {
+          "$desktop_url": url + param,
+          "$ios_url": url + param,
+          "$android_url": url + param,
+          "$canonical_url": url,
+        }
+      };
+
+      branch.link(linkData, function(err, link) {
+        console.log(link);
+        $("#utm_link").val(link);
+        document.getElementById('utmanchor').href = link || err;
+      });
+    });
+
+    //#multi links opening test
+    $(document).ready(function(){
+      let t = 10;
+      $("#multirun").click(function(){
+        for(let i=0;i<t; i++){
+          setTimeout(function(){
+            let url = "http://www.whereyogi.com",
+            param = "?a=b&utm_content=test_content&utm_term=test_term";
+            var linkData = {
+              campaign: 'utm_test_campaign',
+              channel: 'utm_test_channel',
+              feature: 'utm_test_feature',
+              data: {
+                "rs":Math.floor((Math.random() * 100000) + 1),
+                "$desktop_url": url + param,
+                "$ios_url": url + param,
+                "$android_url": url + param,
+                "$canonical_url": url,
+              }
+            };
+
+            branch.link(linkData, function(err, link) {
+              console.log(link);
+              window.open(url,'_blank');
+            });
+          },5000);
+        }
+      })
+    });
+
+
+
     //$("#createdeeplink").click(function(){
       $(document).ready(function(){
+         //for utm ga test
       var linkData = {
         campaign: 'content 123',
         channel: 'website',
