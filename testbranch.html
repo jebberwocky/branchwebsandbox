@@ -3,6 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="branch:deeplink:productid" content="SUK1001" />
+    
     <title></title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61112099-1"></script>
@@ -19,15 +20,58 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script>
+      function getUrlVars()
+      {
+          var vars = [], hash;
+          var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+          for(var i = 0; i < hashes.length; i++)
+          {
+              hash = hashes[i].split('=');
+              vars.push(hash[0]);
+              vars[hash[0]] = hash[1];
+          }
+          return vars;
+      }
+      
+      
         // load Branch
         (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
       // init Branch
-      branch.init('key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo', function(err, data) {
-        console.log(err, data);
+
+      var init_data = {
+        '~channel':'test',
+        '$journeys_title':"这是一个App",
+        "$journeys_button_get_has_app":"افتح",
+        "$journeys_button_get_no_app":"افتح",
+        'journeys_data' : 'JEFFLIU',
+        "$journeys_icon_image_url":"http://img-whereyogi.oss-us-west-1.aliyuncs.com/2.pic.jpg"
+        };
+      if(getUrlVars()['utm_campaign']){
+        init_data['~campaign'] = getUrlVars()['utm_campaign'];
+      }
+      if(getUrlVars()['utm_tags']){
+        init_data['~tags'] = getUrlVars()['utm_tags'];
+      }
+
+      branch.init('key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo',
+        {
+          'disable_entry_animation' : true,
+          'disable_exit_animation' : true,
+          metadata : init_data
+      },
+       function(err, data) {
+        console.log("branch init", err, data);
+        bbpid = branch.B;
+        $("#bbpid").html(bbpid);
         document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
         branch.data(function(err, data) {
           console.log(err, data); 
         }); 
+      });
+
+      branch.setBranchViewData({
+        tags: [ 'EDM', 'V5849', 'Normal+EDM' ],
+        data: init_data
       });
 //
       branch.setIdentity('UUID123456', function (err, data) {
@@ -44,6 +88,12 @@
   <body>
     <div class="container-fluid">
       <h3>Branch Web SDK Demo Code</h3>
+       <div class="row">
+        <div class="col">
+            <label >Browser Fingerprint Id</label>
+        <pre id="bbpid"></pre>
+       </div>
+      </div>
       <h4>Branch data from init</h4>
       <div class="row">
         <div class="col">
@@ -55,6 +105,10 @@
             <label>This is quick link generated from Dashboard</label>
             <a href="https://whereyogi.app.link/oaACZCePPU">https://whereyogi.app.link/oaACZCePPU</a>
            </div>
+           <div class="form-group">
+            <label >Update Jounrneys data</label>
+            <a class="btn btn-warning btn-lg btn-block" id="changedata">Update</a>
+        </div>
             <div class="form-group">
                 <label >Multi links open test(will generate 10 links and open in new tab)</label>
                 <a class="btn btn-warning btn-lg btn-block" id="multirun">run</a>
@@ -87,6 +141,20 @@
 </body>
 <script>
   $(document).ready(function(){
+
+    $("#changedata").click(function(){
+      console.log("setBranchViewData")
+      branch.setBranchViewData({
+          data: {
+              'productid': 'JEFFLIU'
+          }
+      });
+      branch.closeJourney(function(err) { console.log(err); });
+      branch.track('pageview',{},{
+        'disable_entry_animation' : true,
+        'disable_exit_animation' : true
+      });
+    });
 
     $("#sendEvent").click(function(){
       branch.logEvent(

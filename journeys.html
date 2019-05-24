@@ -81,6 +81,16 @@
      function(err) { console.log(err); }
     );
 
+    var listener = function(event, data) { 
+      window.open("http://test.com")
+    }
+
+    // Specify an event to listen for
+    branch.addListener('didClickJourneyCTA', listener);
+
+    // Listen for all events
+    branch.addListener(listener);
+
 
   </script>
 </head>
