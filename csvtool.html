@@ -1,208 +1,275 @@
 <!doctype html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Branch CSV Tool</title>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.0.0/papaparse.min.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.0.0/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
   <script>
-    function getUrlVars()
-    {
-        var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-        for(var i = 0; i < hashes.length; i++)
-        {
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
-        }
-        return vars;
+    function getUrlVars() {
+      var vars = [], hash;
+      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+      }
+      return vars;
     }
-    
-    
-      // load Branch
-      (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
+
+
+    // load Branch
+    (function (b, r, a, n, c, h, _, s, d, k) { if (!b[n] || !b[n]._q) { for (; s < _.length;)c(h, _[s++]); d = r.createElement(a); d.async = 1; d.src = "https://cdn.branch.io/branch-latest.min.js"; k = r.getElementsByTagName(a)[0]; k.parentNode.insertBefore(d, k); b[n] = h } })(window, document, "script", "branch", function (b, r) { b[r] = function () { b._q.push([r, arguments]) } }, { _q: [], _v: 1 }, "addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
     // init Branch
 
     var init_data = {
-      '~channel':'test',
-      '$journeys_title':"这是一个App",
-      "$journeys_button_get_has_app":"افتح",
-      "$journeys_button_get_no_app":"افتح",
-      'journeys_data' : 'JEFFLIU',
-      "$journeys_icon_image_url":"http://img-whereyogi.oss-us-west-1.aliyuncs.com/2.pic.jpg"
-      };
-    if(getUrlVars()['utm_campaign']){
+      '~channel': 'test',
+      '$journeys_title': "这是一个App",
+      "$journeys_button_get_has_app": "افتح",
+      "$journeys_button_get_no_app": "افتح",
+      'journeys_data': 'JEFFLIU',
+      "$journeys_icon_image_url": "http://img-whereyogi.oss-us-west-1.aliyuncs.com/2.pic.jpg"
+    };
+    if (getUrlVars()['utm_campaign']) {
       init_data['~campaign'] = getUrlVars()['utm_campaign'];
     }
-    if(getUrlVars()['utm_tags']){
+    if (getUrlVars()['utm_tags']) {
       init_data['~tags'] = getUrlVars()['utm_tags'];
     }
 
     branch.init('key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo',
       {
         'no_journeys': true,
-        'disable_entry_animation' : true,
-        'disable_exit_animation' : true,
-        metadata : init_data
-    },
-     function(err, data) {
-      console.log("branch init", err, data);
-      bbpid = branch.B;
-      $("#bbpid").html(bbpid);
-      document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
-      branch.data(function(err, data) {
-        console.log(err, data); 
-      }); 
-    });
+        'disable_entry_animation': true,
+        'disable_exit_animation': true,
+        metadata: init_data
+      },
+      function (err, data) {
+        console.log("branch init", err, data);
+        bbpid = branch.B;
+        $("#bbpid").html(bbpid);
+        document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+        branch.data(function (err, data) {
+          console.log(err, data);
+        });
+      });
 
     if (performance.navigation.type == 1) {
-      console.info( "This page is reloaded" );
+      console.info("This page is reloaded");
     } else {
-      console.info( "This page is not reloaded");
+      console.info("This page is not reloaded");
     }
   </script>
 </head>
+
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1">Branch CSV Tool</span>
-      </nav>
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">Branch CSV Tool</span>
+  </nav>
   <div class="container">
-     <div class="row">
-        <div class="">
-            
-        </div>
+    <div class="row">
+      <div class="">
+
+      </div>
     </div>
     <form>
-            <div class="form-group">
-                    <label for="exampleInputEmail1">Campaign</label>
-                    <input id="campaign_txt" type="text" class="form-control" placeholder="">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Channel</label>
-                    <input id="channel_txt" type="text" class="form-control"  placeholder="">
-                  </div>
-                  <div class="form-group">
-                        <label for="exampleInputPassword1">Feature</label>
-                        <input id="feture_txt" type="text" class="form-control"  placeholder="">
-                      </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Stage</label>
-                        <input id="stage_txt" type="text" class="form-control"  placeholder="">
-                    </div>
-                <div class="form-group">
-                        <label for="exampleInputPassword1">Tags</label>
-                        <input id="tags_txt" ype="text" class="form-control"  placeholder="">
-                        </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Alias</label>
-                        <input id="alias_txt" type="text" class="form-control"  placeholder="">
-                    </div>
-        <div class="form-group">
-            <label>Data </label>
-            <a href="http://whereyogi.com/branch/bulk_tool_template.csv" target="_blank">Download Data Template</a>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="csvfile">
-                <label class="custom-file-label" for="csvfile">Choose file</label>
-              </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Campaign</label>
+        <input id="campaign_txt" type="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Channel</label>
+        <input id="channel_txt" type="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Feature</label>
+        <input id="feture_txt" type="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Stage</label>
+        <input id="stage_txt" type="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Tags</label>
+        <input id="tags_txt" ype="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Alias</label>
+        <input id="alias_txt" type="text" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label>Data </label>
+        <a href="http://whereyogi.com/branch/bulk_tool_template.csv" target="_blank">Download Data Template</a>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="csvfile">
+          <label class="custom-file-label" for="csvfile">Choose file</label>
         </div>
-        <div id="success_alert" style="display: none;" class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong>Successful</strong> You just import <span id="s_row_count"></span> rows
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div>
-            <button type="button" id="gen_btn" class="btn btn-primary btn-lg">Generate</button>
-            <a style="display: none;" id="download_link" href="" class="btn btn-lg">Download</a>
-        </div>
-      </form>
-</div>
+      </div>
+      <div id="success_alert" style="display: none;" class="alert alert-success alert-dismissible fade show"
+        role="alert">
+        <strong>Successful</strong> You just import <span id="s_row_count"></span> rows
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div>
+        <button type="button" id="gen_btn" class="btn btn-primary btn-lg">Generate</button>
+        <a style="display: none;" id="download_link" href="" class="btn btn-info btn-lg">Download</a>
+        <button style="display: none;" type="button" id="create_link" class="btn btn-success btn-lg">Create Links by
+          JS</button>
+      </div>
+    </form>
+    <div style="display: none;" id="created_links" class="card">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">$marketing_title</th>
+              <th scope="col">Link</th>
+            </tr>
+          </thead>
+          <tbody id="links_table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </body>
 <script>
-//https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript
-function ConvertToCSV(objArray) {
-            var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-            var str = '';
+  //https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript
+  function ConvertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
 
-            for (var i = 0; i < array.length; i++) {
-                var line = '';
-                for (var index in array[i]) {
-                    if (line != '') line += ','
+    for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+        if (line != '') line += ','
 
-                    line += array[i][index];
-                }
+        line += array[i][index];
+      }
 
-                str += line + '\r\n';
-            }
+      str += line + '\r\n';
+    }
 
-            return str;
-        }
-function cleanString(input) {
+    return str;
+  }
+  function cleanString(input) {
     var output = "";
-    for (var i=0; i<input.length; i++) {
-        if (input.charCodeAt(i) <= 127) {
-            output += input.charAt(i);
-        }
+    for (var i = 0; i < input.length; i++) {
+      if (input.charCodeAt(i) <= 127) {
+        output += input.charAt(i);
+      }
     }
     return output;
-}
+  }
 
-function downloadFile(fileName, urlData) {
-  var aLink = document.getElementById("download_link")
-  aLink.download = fileName;
-  aLink.href = urlData;
-}
+  function downloadFile(fileName, urlData) {
+    var aLink = document.getElementById("download_link")
+    aLink.download = fileName;
+    aLink.href = urlData;
+  }
+
+  function createlink(linkdata, callback) {
+
+    branch.link(linkdata, function (err, link) {
+      if (callback) {
+        callback(err, link);
+      }
+    });
+  }
 
 
-$(document).ready(function(){
+  $(document).ready(function () {
     var fileInput = document.getElementById("csvfile");
-    var result_set = [];
-    result_set.push(['campaign','channel','feature','stage','tags','alias','data'])
+    var result_set = [], link_jsons = [];
+    result_set.push(['campaign', 'channel', 'feature', 'stage', 'tags', 'alias', 'data'])
     var read_raw;
     readFile = function () {
-        var reader = new FileReader();
-        reader.onload = function () {
-            read_raw = $.csv.toObjects(reader.result);
-            if(typeof read_raw === typeof []){
-              console.log(read_raw)
-              $("#s_row_count").html(read_raw.length);
-              $("#success_alert").show();
+      var reader = new FileReader();
+      reader.onload = function () {
+        read_raw = $.csv.toObjects(reader.result);
+        if (typeof read_raw === typeof []) {
+          if (typeof read_raw === typeof []) {
+            for (let i = 0; i < read_raw.length; ++i) {
+              if (read_raw[i]['ï»¿$marketing_title']) {
+                read_raw[i]['$marketing_title'] = read_raw[i]['ï»¿$marketing_title'];
+                delete read_raw[i]['ï»¿$marketing_title'];
+              }
             }
-        };
-        // start reading the file. When it is done, calls the onload event defined above.
-        reader.readAsBinaryString(fileInput.files[0]);
+          };
+          $("#s_row_count").html(read_raw.length);
+          $("#success_alert").show();
+        }
+      };
+      // start reading the file. When it is done, calls the onload event defined above.
+      reader.readAsBinaryString(fileInput.files[0]);
     };
 
     fileInput.addEventListener('change', readFile);
 
-    $("#gen_btn").click(function(){
+    $("#gen_btn").click(function () {
       let r = read_raw;
-      if(typeof r === typeof []){
-            for (let i = 0; i < r.length; ++i) {
-                let _t ={
-                  "campaign":$("#campaign_txt").val(),
-                  "channel":$("#channel_txt").val(),
-                  "feature":$("#feture_txt").val(),
-                  "stage":$("#stage_txt").val(),
-                  "tags":$("#tags_txt").val(),
-                  "alias":$("#alias_txt").val(),
-                  "data": "\""+cleanString(JSON.stringify(r[i])).replace(/"/g, "\"\"")+"\""
-                }
-                result_set.push(_t);
-            }}
-            console.log(result_set);
-            console.log(ConvertToCSV(result_set));
-            downloadFile('result.csv', 'data:text/csv;charset=UTF-8,' + encodeURIComponent(ConvertToCSV(result_set)));
-            $("#download_link").show();
-            result_set = [];
-            result_set.push(['campaign','channel','feature','stage','tags','alias','data'])
-            read_raw = [];
+      if (typeof r === typeof []) {
+        for (let i = 0; i < r.length; ++i) {
+          let _t = {
+            "campaign": $("#campaign_txt").val(),
+            "channel": $("#channel_txt").val(),
+            "feature": $("#feture_txt").val(),
+            "stage": $("#stage_txt").val(),
+            "tags": $("#tags_txt").val(),
+            "alias": $("#alias_txt").val(),
+            "data": "\"" + cleanString(JSON.stringify(r[i])).replace(/"/g, "\"\"") + "\""
+          }
+          result_set.push(_t);
+          link_jsons.push({
+            "campaign": $("#campaign_txt").val(),
+            "channel": $("#channel_txt").val(),
+            "feature": $("#feture_txt").val(),
+            "stage": $("#stage_txt").val(),
+            "tags": $("#tags_txt").val(),
+            "alias": $("#alias_txt").val(),
+            "data": r[i]
+          })
+        }
+      }
+      console.log(result_set);
+      console.log(ConvertToCSV(result_set));
+      downloadFile('result.csv', 'data:text/csv;charset=UTF-8,' + encodeURIComponent(ConvertToCSV(result_set)));
+      $("#download_link").show();
+      $('#create_link').show();
+      result_set = [];
+      result_set.push(['campaign','channel','feature','stage','tags','alias','data'])
+      read_raw = [];
     });
-});
+
+    $("#create_link").click(function () {
+      if (link_jsons && typeof link_jsons === typeof []) {
+        $("#created_links").show();
+        for (let i = 0; i < link_jsons.length; ++i) {
+          createlink(link_jsons[i], function (err, link) {
+            if (err) {
+              $("#links_table").append("<tr><td>" + err + "</td><td>" + link + "</td></tr>");
+            } {
+              $("#links_table").append("<tr><td>" + JSON.parse(link_jsons[i].data)['$marketing_title'] + "</td><td>" + link + "</td></tr>");
+            }
+          })
+        }
+      }
+    });
+  });
 </script>
+
 </html>
