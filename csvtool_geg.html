@@ -209,7 +209,42 @@
   </div>
 </body>
 <script>
-  //https://stackoverflow.com/questions/11257062/converting-json-object-to-csv-format-in-javascript
+  function generateLinkDataObject(title, url){
+    var pattern = /[e]_[a-zA-Z0-9 -]+/,
+      pattern2 = /[p]_[a-zA-Z0-9 -]+/
+      pattern3 = /\/s\/.*\//;
+    var r = {
+      "$marketing_title":title,
+      "branch_dp":"zaful://action?actiontype=0",
+      "$ios_url":url,
+      "$android_url":url,
+      "$desktop_url":url
+    };
+    //if match 1
+    var match = url.match(pattern);
+    if(match&&match.length>0){
+      let _t = match[0].split('_');
+      r["branch_dp"] = "zaful://action?actiontype=2&url="+_t[1];
+      return r;
+    }
+    //if match 2
+    match = url.match(pattern2);
+    if(match&&match.length>0){
+      let _t = match[0].split('_');
+      r["branch_dp"] = "zaful://action?actiontype=3&url="+_t[1];
+      return r;
+    }
+    //if match 3
+    match = url.match(pattern3);
+    if(match&&match.length>0){
+      let _t = match[0].split('/');
+      r["branch_dp"] = "zaful://action?actiontype=4&url="+_t[2];
+      return r;
+    }
+    return r;
+  }
+
+
   function ConvertToCSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
@@ -265,10 +300,12 @@
         if (typeof read_raw === typeof []) {
           if (typeof read_raw === typeof []) {
             for (let i = 0; i < read_raw.length; ++i) {
-              if (read_raw[i]['ï»¿$marketing_title']) {
-                read_raw[i]['$marketing_title'] = read_raw[i]['ï»¿$marketing_title'];
-                delete read_raw[i]['ï»¿$marketing_title'];
+              console.log(read_raw[i])
+              if (read_raw[i]['ï»¿name']) {
+                read_raw[i]['name'] = read_raw[i]['ï»¿name'];
+                delete read_raw[i]['ï»¿name'];
               }
+              read_raw[i] = generateLinkDataObject(read_raw[i]["name"],read_raw[i]["link"])
             }
           };
           $("#s_row_count").html(read_raw.length);
@@ -279,7 +316,7 @@
       reader.readAsBinaryString(fileInput.files[0]);
     };
 
-        fileInput.addEventListener('change', readFile);
+    fileInput.addEventListener('change', readFile);
 
     $("#gen_btn").click(function () {
       let r = read_raw;
