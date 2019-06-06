@@ -209,7 +209,7 @@
   </div>
 </body>
 <script>
-  function generateLinkDataObject(title, url){
+  function generateLinkDataObject(title, url, tags){
     var pattern = /[e]_[a-zA-Z0-9 -]+/,
       pattern2 = /[p]_[a-zA-Z0-9 -]+/
       pattern3 = /\/s\/.*\//;
@@ -218,7 +218,8 @@
       "branch_dp":"zaful://action?actiontype=0",
       "$ios_url":url,
       "$android_url":url,
-      "$desktop_url":url
+      "$desktop_url":url,
+      "tags":tags
     };
     //if match 1
     var match = url.match(pattern);
@@ -305,7 +306,7 @@
                 read_raw[i]['name'] = read_raw[i]['ï»¿name'];
                 delete read_raw[i]['ï»¿name'];
               }
-              read_raw[i] = generateLinkDataObject(read_raw[i]["name"],read_raw[i]["link"])
+              read_raw[i] = generateLinkDataObject(read_raw[i]["name"],read_raw[i]["link"],read_raw[i]["tags"])
             }
           };
           $("#s_row_count").html(read_raw.length);
@@ -322,12 +323,16 @@
       let r = read_raw;
       if (typeof r === typeof []) {
         for (let i = 0; i < r.length; ++i) {
+          let tags = $("#tags_txt").tagsinput('items');
+          if(typeof tags === typeof [] && typeof r[i].tags === typeof []){
+            tags = tags.concat(r[i].tags);
+          }
           let _t = {
             "campaign": $("#campaign_txt").val(),
             "channel": $("#channel_txt").val(),
             "feature": $("#feture_txt").val(),
             "stage": $("#stage_txt").val(),
-            "tags": "\"" +cleanString(JSON.stringify($("#tags_txt").tagsinput('items'))).replace(/"/g, "\"\"") + "\"",
+            "tags": "\"" +cleanString(JSON.stringify(tags)).replace(/"/g, "\"\"") + "\"",
             "alias": $("#alias_txt").val(),
             "data": "\"" + cleanString(JSON.stringify(r[i])).replace(/"/g, "\"\"") + "\""
           }
