@@ -62,6 +62,7 @@
           metadata : init_data
       },
        function(err, data) {
+
         console.log("branch init", err, data);
         bbpid = branch.B;
         $("#bbpid").html(bbpid);
@@ -71,11 +72,13 @@
         }); 
       });
 
+      init_data["jeff_test"] ="new";
       branch.setBranchViewData({
         tags: [ 'EDM', 'V5849', 'Normal+EDM' ],
         data: init_data
       });
-//
+
+
       branch.setIdentity('UUID123456', function (err, data) {
         console.log(err, data);
       });
