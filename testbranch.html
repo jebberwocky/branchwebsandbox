@@ -35,7 +35,7 @@
       
       
         // load Branch
-        (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
+        (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking crossPlatformIds".split(" "), 0);
       // init Branch
 
       var init_data = {
@@ -72,6 +72,27 @@
         }); 
       });
 
+      //journeys events
+      var listener = function(event, data) { 
+        let _h = 76+"px"
+        $("#navbar").css({ top: _h});
+        $(window).scroll(function() {
+            var scrollYpos = $(document).scrollTop();
+            console.log(scrollYpos)
+            if(scrollYpos>76){
+              $("#navbar").css({ top: 0});
+            }else{
+              $("#navbar").css({ top: 76});
+            }
+        });
+      }
+
+      // Specify an event to listen for
+      branch.addListener('willShowJourney', listener);
+
+      // Listen for all events
+branch.addListener(listener);
+
       init_data["jeff_test"] ="new";
       branch.setBranchViewData({
         tags: [ 'EDM', 'V5849', 'Normal+EDM' ],
@@ -88,10 +109,26 @@
       } else {
         console.info( "This page is not reloaded");
       }
+
+      //CPID
+      branch.crossPlatformIds(
+          function(err, data){
+            console.log("cpid");
+            if(err){
+              console.log(err)
+            }else{
+              console.log(data)
+            }
+          }
+      );
     </script>
   </head>
   <body>
+      <nav id="navbar" class="navbar fixed-top navbar-light bg-light">
+          <a class="navbar-brand" href="#">Fixed top</a>
+        </nav>
     <div class="container-fluid">
+
       <h3>Branch Web SDK Demo Code</h3>
        <div class="row">
         <div class="col">
@@ -154,7 +191,7 @@
               'productid': 'JEFFLIU'
           }
       });
-      branch.closeJourney(function(err) { console.log(err); });
+      //branch.closeJourney(function(err) { console.log(err); });
       branch.track('pageview',{},{
         'disable_entry_animation' : true,
         'disable_exit_animation' : true

@@ -5,11 +5,18 @@
     <body>
         <div></div>
         <script>
-            let params = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-            if(params["lpurl"]){
-                let target_url = encodeURIComponent(params["lpurl"]);
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                                .exec(window.location.search);
+
+                return (results !== null) ? results[1] || 0 : false;
+            }
+            console.log($.urlParam('lpurl'))
+            if($.urlParam('lpurl')){
+                let target_url = decodeURIComponent($.urlParam('lpurl'));
+                console.log(target_url)
                 target_url += "?"+ window.location.href.slice(window.location.href.indexOf('?') + 1);
-                window.location.href = target_url;
+                window.location.href  = target_url;
             }
         </script>
     </body>
