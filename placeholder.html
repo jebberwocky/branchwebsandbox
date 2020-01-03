@@ -15,88 +15,16 @@
       //
     //
       // init Branch
-    branch.init('key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo', 
-    {
-      'make_new_link':true
-    },
+    branch.init('key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo',
     function(err, data) {
       console.log(err, data);
-      document.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
-      branch.data(function(err, data) {
+ branch.data(function(err, data) {
         console.log(err, data); 
       }); 
     });
-    //
-branch.setBranchViewData({
-    'tags': [ 'override' ],
-    'campaign': 'override',
-    'channel':'override'
-});
-
-
-//
-    branch.setIdentity('UUID123456', function (err, data) {
-      console.log(err, data);
-    });
-
-    if (performance.navigation.type == 1) {
-      console.info( "This page is reloaded" );
-    } else {
-      console.info( "This page is not reloaded");
-    }
   </script>
 </head>
 <body>
-  <div class="container-fluid">
-    <h3>Branch Web SDK Demo Code</h3>
-    <h4>Branch data from init</h4>
-    <div class="row">
-      <div class="col">
-      <pre id="json"></pre>
-     </div>
-    </div>
-       <form>
-        <div class="form-group">
-          <a class="btn btn-danger btn-lg btn-block" id="sendCommerceEvent">Send commerce event</a>
-        </div>
-        <div class="form-group">
-          <a class="btn btn-danger btn-lg btn-block" id="sendEvent">Send custom event</a>
-        </div>
-      </form>
-</div>
 </body>
-<script>
-$(document).ready(function(){
-
-  $("#sendCommerceEvent").click(function(){
-    let event_and_custom_data = {
-        "~campaign":"fake campaign",
-        "transaction_id": "tras_Id_1232343434",
-        "currency": "USD",
-        "revenue": 180.2,
-        "shipping": 10.5,
-        "tax": 13.5,
-        "description": "Web sdk purchase",
-    };
-
-    let content_items = [];
-
-    branch.logEvent(
-         "PURCHASE",
-         event_and_custom_data,
-         content_items,
-         function(err) { console.log(err); }
-    );
-  })
-
-  $("#sendEvent").click(function(){
-    branch.logEvent(
-         "helloworld",
-         { metadata: '123', sku: '12345678' },
-         function(err) { console.log(err); }
-    );
-  });
-
-})//})
 </script>
 </html>

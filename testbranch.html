@@ -3,7 +3,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="branch:deeplink:productid" content="SUK1001" />
-    
+    <meta name="branch:deeplink:pagetype" content="product" />
+    <meta name="branch:deeplink:yestylet" content="product" />
     <title></title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61112099-1"></script>
@@ -44,6 +45,7 @@
         "$journeys_button_get_has_app":"افتح",
         "$journeys_button_get_no_app":"افتح",
         'fordeal_data' : 'JEFFLIU',
+        '~campaign':'campaign_test_link',
         'xyz':'1231231',
         'lang':'en',
         "$journeys_icon_image_url":"http://img-whereyogi.oss-us-west-1.aliyuncs.com/2.pic.jpg"
@@ -59,7 +61,8 @@
         {
           'disable_entry_animation' : true,
           'disable_exit_animation' : true,
-          metadata : init_data
+          metadata : init_data,
+          'tracking_disabled' : true
       },
        function(err, data) {
 
@@ -78,7 +81,7 @@
         $("#navbar").css({ top: _h});
         $(window).scroll(function() {
             var scrollYpos = $(document).scrollTop();
-            console.log(scrollYpos)
+            //console.log(scrollYpos)
             if(scrollYpos>76){
               $("#navbar").css({ top: 0});
             }else{
@@ -116,8 +119,10 @@ branch.addListener(listener);
             console.log("cpid");
             if(err){
               console.log(err)
+              document.getElementById("cpid-json").innerHTML = "<span>error</span>"
             }else{
               console.log(data)
+              document.getElementById("cpid-json").innerHTML = JSON.stringify(data, undefined, 2);
             }
           }
       );
@@ -130,6 +135,12 @@ branch.addListener(listener);
     <div class="container-fluid">
 
       <h3>Branch Web SDK Demo Code</h3>
+      <div class="row">
+        <div class="col">
+            <label >User-Agent</label>
+        <div id="useragent"></div>
+       </div>
+      </div>
        <div class="row">
         <div class="col">
             <label >Browser Fingerprint Id</label>
@@ -142,8 +153,20 @@ branch.addListener(listener);
         <pre id="json"></pre>
        </div>
       </div>
+
+      <h4>CPID data</h4>
+      <div class="row">
+        <div class="col">
+        <pre id="cpid-json"></pre>
+       </div>
+      </div>
+
          <form>
            <div class="form-group">
+              <label>disable/enable Tracking</label>
+              <a class="btn btn-primary btn-lg btn-block" id="btn-dis-tracking">Disable</a>
+              <a class="btn btn-primary btn-lg btn-block" id="btn-en-tracking">Enable</a>
+             </div>
             <label>This is quick link generated from Dashboard</label>
             <a href="https://whereyogi.app.link/oaACZCePPU">https://whereyogi.app.link/oaACZCePPU</a>
            </div>
@@ -183,6 +206,14 @@ branch.addListener(listener);
 </body>
 <script>
   $(document).ready(function(){
+
+    $("#btn-dis-tracking").click(function(){
+      branch.disableTracking(true)
+    })
+
+    $("#btn-en-tracking").click(function(){
+      branch.disableTracking(false)
+    })
 
     $("#changedata").click(function(){
       console.log("setBranchViewData")
@@ -231,7 +262,7 @@ branch.addListener(listener);
       };
        branch.link(linkData, function(err, link) {
         console.log(link);
-        window.location.href=link;
+        window.location.href=link;//link= https://get99.app.link/cdacda
       });
     })
 
@@ -261,6 +292,9 @@ branch.addListener(listener);
     })
 
     $(document).ready(function(){
+
+      $("#useragent").html(navigator.userAgent);
+
       let url = "http://www.whereyogi.com",
       param = "?a=b&utm_content=test_content&utm_term=test_term";
       var linkData = {
