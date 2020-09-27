@@ -48,6 +48,7 @@
         '~campaign':'campaign_test_link',
         'xyz':'1231231',
         'lang':'en',
+        '$journeys_cta': 'https://www.cnn.com',
         "$journeys_icon_image_url":"http://img-whereyogi.oss-us-west-1.aliyuncs.com/2.pic.jpg"
         };
       if(getUrlVars()['utm_campaign']){
@@ -201,6 +202,9 @@ branch.addListener(listener);
           <div class="form-group">
           <a class="btn btn-danger btn-lg btn-block" id="sendEvent">Send custom event</a>
         </div>
+        <div class="form-group">
+          <a class="btn btn-danger btn-lg btn-block" id="create_from_websdk">create from websdk for testing branchify_url</a>
+        </div>
         </form>
   </div>
 </body>
@@ -350,6 +354,8 @@ branch.addListener(listener);
 
     //$("#createdeeplink").click(function(){
       $(document).ready(function(){
+
+
          //for utm ga test
       var linkData = {
         campaign: 'content 123',
